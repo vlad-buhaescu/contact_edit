@@ -41,12 +41,13 @@ class SecondCell: UITableViewCell {
         addSubview(lastNameLabel)
         addSubview(lastNameTextField)
         
-        //constraints nameLabel
+        //constraints lastNameLabel
         lastNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15).isActive = true
         lastNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
         lastNameLabel.rightAnchor.constraint(equalTo: lastNameTextField.leftAnchor, constant: 10).isActive = true
         lastNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15).isActive = true
         
+        //constraints lastNameLabel
         lastNameTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         lastNameTextField.widthAnchor.constraint(equalToConstant: 170).isActive = true
         lastNameTextField.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
