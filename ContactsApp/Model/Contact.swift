@@ -8,8 +8,13 @@
 
 import Foundation
 
-struct Contact {
+class Contact: NSObject {
     
-    var name: String
+    var firstName: String
+    var lastName: String
 
+    public init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
 }

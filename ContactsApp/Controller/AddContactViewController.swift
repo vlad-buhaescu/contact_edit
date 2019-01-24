@@ -9,14 +9,16 @@
 import UIKit
 
 protocol AddContactControllerBDelegate: class {
-    func addContact(text:String)
+    func addContact(text: Contact)
+    func editContact(contact: Contact)
 }
 
-class AddContactViewController: UITableViewController {
+class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
     var firstCellID = "FirstCellID"
     var secondCellID = "secondCellID"
     
+    var contactToEdit: Contact?
     weak var delegate: AddContactControllerBDelegate?
     
     override func viewDidLoad() {
@@ -26,9 +28,13 @@ class AddContactViewController: UITableViewController {
         tableView.register(FirstCell.self, forCellReuseIdentifier: firstCellID)
         tableView.register(SecondCell.self, forCellReuseIdentifier: secondCellID)
         
-        navigationItem.title = "New Employee"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
+        if let contact = contactToEdit {
+            title = "Employee"
+        } else {
+            title = "New Employee"
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
+        }
     }
     
     @objc func cancel() {
@@ -40,10 +46,37 @@ class AddContactViewController: UITableViewController {
         let index2 = IndexPath(row: 1, section: 0)
         let firstCell: FirstCell = self.tableView.cellForRow(at: index1) as! FirstCell
         let secondCell: SecondCell = self.tableView.cellForRow(at: index2) as! SecondCell
-        let contact = " \(firstCell.firstNameTextField.text!) \(secondCell.lastNameTextField.text!)"
-        delegate?.addContact(text: contact)
+        
+        guard let firstName = firstCell.firstNameTextField.text,
+            let lastName = secondCell.lastNameTextField.text else {
+                print("Text field issue")
+                return
+        }
+        delegate?.addContact(text: Contact(firstName: firstName, lastName: lastName))
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let oldText = textField.text,
+            let stringRange = Range(range, in:oldText) else {
+                return false
+        }
+    
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        if let _ = textField.superview as? FirstCell,
+            let contact = contactToEdit {
+            contact.firstName = newText
+            delegate?.editContact(contact: contact)
+        }
+        
+        if let _ = textField.superview as? SecondCell,
+            let contact = contactToEdit {
+            contact.lastName = newText
+            delegate?.editContact(contact: contact)
+        }
+        
+        return true
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,23 +85,33 @@ class AddContactViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: firstCellID, for: indexPath) as! FirstCell
-            cell.firstNameLabel.text = "First Name"
-            cell.firstNameTextField.text = ""
+            
+            cell.firstNameLabel.text = "First name"
+            cell.selectionStyle = .none
+            cell.firstNameTextField.delegate = self
+            if let contact = contactToEdit {
+                cell.firstNameTextField.text = contact.firstName
+                
+            }
             return cell
             
         } else if indexPath.row == 1 {
+            
             let cell2 = tableView.dequeueReusableCell(withIdentifier: secondCellID, for: indexPath) as! SecondCell
-            cell2.lastNameLabel.text = "Last Name"
-            cell2.lastNameTextField.text = ""
+            
+            cell2.lastNameLabel.text = "Last name"
+            cell2.lastNameTextField.delegate = self
+            cell2.selectionStyle = .none
+            if let contact = contactToEdit {
+                cell2.lastNameTextField.text = contact.lastName
+            }
             return cell2
         }
         return UITableViewCell()
     }
+    
 }
-
-
-
-
 
 
