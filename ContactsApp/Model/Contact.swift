@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Contact {
+class Contact: NSObject {
     
-    var name: String
+    var name: String = ""
 
 }

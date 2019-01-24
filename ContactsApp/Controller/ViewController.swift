@@ -8,10 +8,11 @@
 
 import UIKit
 
-class ViewController: UITableViewController, AddContactControllerBDelegate {
+class ViewController: UITableViewController, AddContactControllerBDelegate, UITextFieldDelegate {
   
-    var contacts = [String]()
+    var contacts = [Contact]()
     var contactID = "contactID"
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +30,25 @@ class ViewController: UITableViewController, AddContactControllerBDelegate {
         self.present(navigationController, animated: true)
     }
     
-    func addContact(text: String) {
+    func editContact(text: Contact) {
+        if let index = contacts.index(of: text) {
+            let indexPath = IndexPath(row: index, section: 0)
+            let cell = tableView.dequeueReusableCell(withIdentifier: contactID, for: indexPath) as! ContactsCell
+                cell.nameLabel.text = text.name
+            
+             tableView.reloadData()
+//                print("NameLabel is \( cell1.nameLabel.text)")
+        }
+//        navigationController?.popViewController(animated:true)
+    }
+    
+ 
+    
+    func addContact(text: Contact) {
         let newRowIndex = contacts.count
-        contacts.append(text)
+        var contact = Contact()
+        contact.name = text.name
+        contacts.append(contact)
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
         tableView.insertRows(at: indexPaths, with: .automatic)
@@ -51,7 +68,7 @@ class ViewController: UITableViewController, AddContactControllerBDelegate {
         let item = contacts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: contactID, for: indexPath) as! ContactsCell
         cell.selectionStyle = .none
-        cell.nameLabel.text = item
+        cell.nameLabel.text = item.name
         return cell
     }
     
@@ -61,5 +78,13 @@ class ViewController: UITableViewController, AddContactControllerBDelegate {
         tableView.deleteRows(at: [indexPath], with: .fade)
      }
   }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let addContactViewController = AddContactViewController()
+        addContactViewController.delegate = self
+        if let selectedRow = tableView.indexPathForSelectedRow {
+            addContactViewController.contactToEdit = contacts[selectedRow.row]
+    
+    }
+        navigationController?.pushViewController( addContactViewController, animated: true)
+  }
 }
-
