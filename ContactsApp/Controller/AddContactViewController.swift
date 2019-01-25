@@ -67,13 +67,11 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
     private func makeViewModels(contact: Contact?) {
         let firstNameViewModel = TextCellViewModel(labelText: "First name",
-                                                   text: contact?.firstName ?? "",
-                                                   type: .firstName) { newText in
+                                                   text: contact?.firstName ?? "") { (newText) in
                                                     contact?.firstName = newText
         }
         let lastNameViewModel = TextCellViewModel(labelText: "Last name",
-                                                  text: contact?.lastName ?? "",
-                                                  type: .lastName) { newText in
+                                                  text: contact?.lastName ?? "") { (newText) in
                                                     contact?.lastName = newText
         }
         viewModels = [firstNameViewModel, lastNameViewModel]
