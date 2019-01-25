@@ -74,7 +74,7 @@ class ViewController: UITableViewController, AddContactControllerBDelegate, UITe
         let addContactViewController = AddContactViewController()
         addContactViewController.delegate = self
         if let selectedRow = tableView.indexPathForSelectedRow {
-            addContactViewController.contactToEdit = contacts[selectedRow.row]
+//            addContactViewController.contactToEdit = contacts[selectedRow.row]
     }
         navigationController?.pushViewController( addContactViewController, animated: true)
   }
