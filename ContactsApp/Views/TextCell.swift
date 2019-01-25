@@ -24,7 +24,7 @@ public final class TextCell: UITableViewCell {
     
     //MARK: - Private Properties
     
-    private var onTextUpdate: (() -> ())?
+    private var onTextUpdate: ((String) -> ())?
     
     private let nameTextLabel: UILabel = {
         var label = UILabel()
@@ -71,8 +71,8 @@ extension TextCell: UITextFieldDelegate {
             let onTextUpdate = onTextUpdate else {
                 return false
         }
-//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        onTextUpdate()
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        onTextUpdate(newText)
         return true
     }
     

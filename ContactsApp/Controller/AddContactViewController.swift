@@ -1,11 +1,3 @@
-//
-//  AddContactViewController.swift
-//  ContactsApp
-//
-//  Created by Dan  Tatar on 21/01/2019.
-//  Copyright © 2019 Dany. All rights reserved.
-//
-
 import UIKit
 
 protocol AddContactControllerBDelegate: class {
@@ -28,14 +20,20 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
         tableView.delegate = self
         tableView.register(TextCell.self, forCellReuseIdentifier: cellID)
         
-        if let contact = contactToEdit {
+        if let _ = contactToEdit {
             title = "Employee"
-            makeViewModels(contact: contact)
         } else {
+            contactToEdit = Contact()
             title = "New Employee"
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
         }
+        makeViewModels(contact: contactToEdit)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.editContact(contact: contactToEdit ?? Contact())
     }
     
     @objc func cancel() {
@@ -43,55 +41,20 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func save() {
-        //        let index1 = IndexPath(row: 0, section: 0)
-        //        let index2 = IndexPath(row: 1, section: 0)
-        //        let firstCell: FirstCell = self.tableView.cellForRow(at: index1) as! FirstCell
-        //        let secondCell: SecondCell = self.tableView.cellForRow(at: index2) as! SecondCell
-        //
-        //        guard let firstName = firstCell.firstNameTextField.text,
-        //            let lastName = secondCell.lastNameTextField.text else {
-        //                print("Text field issue")
-        //                return
-        //        }
-        //        delegate?.addContact(text: Contact(firstName: firstName, lastName: lastName))
-        //
+        delegate?.addContact(text: contactToEdit ?? Contact())
         dismiss(animated: true, completion: nil)
     }
-    
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        guard let oldText = textField.text,
-//            let stringRange = Range(range, in:oldText) else {
-//                return false
-//        }
-//
-//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-//        //        if let _ = textField.superview as? FirstCell,
-//        //            let contact = contactToEdit {
-//        //            contact.firstName = newText
-//        //            delegate?.editContact(contact: contact)
-//        //        }
-//        //
-//        //        if let _ = textField.superview as? SecondCell,
-//        //            let contact = contactToEdit {
-//        //            contact.lastName = newText
-//        //            delegate?.editContact(contact: contact)
-//        //        }
-//
-//        return true
-//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModels.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? TextCell,
-            viewModels.count < indexPath.row else {
-                return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? TextCell else {
+            return UITableViewCell()
         }
         cell.configure(with: viewModels[indexPath.row])
-        return UITableViewCell()
+        return cell
     }
     
     //MARK: - Private Properties
@@ -102,25 +65,20 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
     //MARK: - Private Methods
     
-    private func makeViewModels(contact: Contact) {
+    private func makeViewModels(contact: Contact?) {
         let firstNameViewModel = TextCellViewModel(labelText: "First name",
-                                                   text: contact.firstName,
-                                                   type: .firstName) { [weak self] in
-                                                    guard let self = self,
-                                                        let contactToEdit = self.contactToEdit else { return }
-                                                    contactToEdit.firstName = "new future delivered text"
+                                                   text: contact?.firstName ?? "",
+                                                   type: .firstName) { newText in
+                                                    contact?.firstName = newText
         }
         let lastNameViewModel = TextCellViewModel(labelText: "Last name",
-                                                  text: contact.lastName,
-                                                  type: .lastName) { [weak self] in
-                                                    guard let self = self,
-                                                        let contactToEdit = self.contactToEdit else { return }
-                                                    contactToEdit.lastName = "new future delivered text lN"
+                                                  text: contact?.lastName ?? "",
+                                                  type: .lastName) { newText in
+                                                    contact?.lastName = newText
         }
         viewModels = [firstNameViewModel, lastNameViewModel]
         tableView.reloadData()
     }
-    
 }
 
 

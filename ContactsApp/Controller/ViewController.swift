@@ -1,18 +1,10 @@
-//
-//  ViewController.swift
-//  ContactsApp
-//
-//  Created by Dan  Tatar on 21/01/2019.
-//  Copyright © 2019 Dany. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UITableViewController, AddContactControllerBDelegate, UITextFieldDelegate {
-  
+    
     var contacts = [Contact]()
     var contactID = "contactID"
- 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -26,16 +18,16 @@ class ViewController: UITableViewController, AddContactControllerBDelegate, UITe
         let addContactViewController = AddContactViewController()
         addContactViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: addContactViewController)
-        self.present(navigationController, animated: true)
+        present(navigationController, animated: true)
     }
     
     func editContact(contact: Contact) {
         if let index = contacts.index(of: contact) {
             contacts[index] = contact
-             tableView.reloadData()
+            tableView.reloadData()
         }
     }
- 
+    
     func addContact(text: Contact) {
         let newRowIndex = contacts.count
         contacts.append(text)
@@ -64,18 +56,17 @@ class ViewController: UITableViewController, AddContactControllerBDelegate, UITe
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-        contacts.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
-     }
-  }
+        if editingStyle == .delete {
+            contacts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let addContactViewController = AddContactViewController()
-        addContactViewController.delegate = self
         if let selectedRow = tableView.indexPathForSelectedRow {
-//            addContactViewController.contactToEdit = contacts[selectedRow.row]
+            let addContactViewController = AddContactViewController(contactToEdit: contacts[selectedRow.row])
+            addContactViewController.delegate = self
+            navigationController?.pushViewController(addContactViewController, animated: true)
+        }
     }
-        navigationController?.pushViewController( addContactViewController, animated: true)
-  }
 }

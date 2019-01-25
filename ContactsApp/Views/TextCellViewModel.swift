@@ -10,7 +10,7 @@ public protocol TextCellViewModelType {
     var labelText: String { get }
     var text: String { get }
     var type: CellType { get }
-    var onTextUpdate: () -> () { get }
+    var onTextUpdate: (String) -> () { get }
 }
 
 public class TextCellViewModel: TextCellViewModelType {
@@ -20,13 +20,12 @@ public class TextCellViewModel: TextCellViewModelType {
     
     public var type: CellType
     
-    public var onTextUpdate: () -> ()
+    public var onTextUpdate: (String) -> ()
 
-    public init(labelText: String, text: String, type: CellType, onTextUpdate: @escaping () -> ()) {
+    public init(labelText: String, text: String, type: CellType, onTextUpdate: @escaping (String) -> ()) {
         self.labelText = labelText
         self.text = text
         self.type = type
         self.onTextUpdate = onTextUpdate
     }
-
 }
