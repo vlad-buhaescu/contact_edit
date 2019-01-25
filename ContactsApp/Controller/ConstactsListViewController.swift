@@ -1,6 +1,17 @@
 import UIKit
 
-class ViewController: UITableViewController, AddContactControllerBDelegate, UITextFieldDelegate {
+class ConstactsListViewController: UITableViewController, AddContactControllerBDelegate, UITextFieldDelegate {
+    
+    init(viewModel: MainViewModelType) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let viewModel: MainViewModelType
     
     var contacts = [Contact]()
     var contactID = "contactID"
@@ -9,16 +20,17 @@ class ViewController: UITableViewController, AddContactControllerBDelegate, UITe
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        navigationItem.title = "Employees"
+        navigationItem.title = viewModel.title
         tableView.register(ContactsCell.self, forCellReuseIdentifier: contactID)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addName))
     }
     
     @objc func addName() {
-        let addContactViewController = AddContactViewController()
-        addContactViewController.delegate = self
-        let navigationController = UINavigationController(rootViewController: addContactViewController)
-        present(navigationController, animated: true)
+        viewModel.onAddTap()
+//        let addContactViewController = AddContactViewController()
+//        addContactViewController.delegate = self
+//        let navigationController = UINavigationController(rootViewController: addContactViewController)
+//        present(navigationController, animated: true)
     }
     
     func editContact(contact: Contact) {
