@@ -7,9 +7,17 @@ protocol AddContactControllerBDelegate: class {
 
 class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
-    convenience init(contactToEdit: Contact?) {
-        self.init(nibName: nil, bundle: nil)
-        self.contactToEdit = contactToEdit
+//    convenience init(contactToEdit: Contact?) {
+//        self.init(nibName: nil, bundle: nil)
+//        self.contactToEdit = contactToEdit
+//    }
+    init(viewModel: AddContactViewModelType) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     weak var delegate: AddContactControllerBDelegate?
@@ -19,16 +27,30 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TextCell.self, forCellReuseIdentifier: cellID)
+
+        title = viewModel.title
         
-        if let _ = contactToEdit {
-            title = "Employee"
-        } else {
+        if contactToEdit == nil {
             contactToEdit = Contact()
             title = "New Employee"
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
+            makeRightButton()
+            makeLeftButton()
         }
         makeViewModels(contact: contactToEdit)
+    }
+    
+    private func makeRightButton() {
+        guard let rightButton = viewModel.rightButton else {
+            return
+        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: rightButton.buttonStyle, target: self, action: #selector(save))
+    }
+    
+    private func makeLeftButton() {
+        guard let leftButton = viewModel.rightButton else {
+            return
+        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: leftButton.buttonStyle, target: self, action: #selector(cancel))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -37,12 +59,12 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func cancel() {
-        dismiss(animated: true, completion: nil)
+        viewModel.leftButton?.onTapAction()
     }
     
     @objc func save() {
         delegate?.addContact(text: contactToEdit ?? Contact())
-        dismiss(animated: true, completion: nil)
+        viewModel.rightButton?.onTapAction()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,6 +84,8 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     private let cellID = "cellID"
     private var contactToEdit: Contact?
     private var viewModels = [TextCellViewModel]()
+    
+    private var viewModel: AddContactViewModelType
     
     //MARK: - Private Methods
     

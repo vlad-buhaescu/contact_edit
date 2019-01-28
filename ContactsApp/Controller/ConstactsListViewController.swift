@@ -26,7 +26,7 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     }
     
     @objc func addName() {
-        viewModel.onAddTap()
+        viewModel.rightButton?.onTapAction()
 //        let addContactViewController = AddContactViewController()
 //        addContactViewController.delegate = self
 //        let navigationController = UINavigationController(rootViewController: addContactViewController)
@@ -76,9 +76,9 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedRow = tableView.indexPathForSelectedRow {
-            let addContactViewController = AddContactViewController(contactToEdit: contacts[selectedRow.row])
-            addContactViewController.delegate = self
-            navigationController?.pushViewController(addContactViewController, animated: true)
+//            let addContactViewController = AddContactViewController(contactToEdit: contacts[selectedRow.row])
+//            addContactViewController.delegate = self
+//            navigationController?.pushViewController(addContactViewController, animated: true)
         }
     }
 }

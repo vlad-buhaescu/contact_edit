@@ -17,8 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let initialViewController = UINavigationController(rootViewController: ConstactsListViewController())
-        self.window?.rootViewController = initialViewController
+        let vc = SplashViewController()
+        let mainNav = UINavigationController(rootViewController: vc)
+        Router.shared.setupNav(mainNav)
+        self.window?.rootViewController = mainNav
         self.window?.makeKeyAndVisible()
         return true
     }

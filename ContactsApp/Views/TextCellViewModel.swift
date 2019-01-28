@@ -1,6 +1,10 @@
-import Foundation
+import UIKit
 
-public protocol TextCellViewModelType {
+public protocol CellViewModelType {
+    func height() -> CGFloat
+}
+
+public protocol TextCellViewModelType: CellViewModelType {
     var labelText: String { get }
     var text: String { get }
     var onTextUpdate: (String) -> () { get }
@@ -17,5 +21,11 @@ public class TextCellViewModel: TextCellViewModelType {
         self.labelText = labelText
         self.text = text
         self.onTextUpdate = onTextUpdate
+    }
+}
+
+extension TextCellViewModel: CellViewModelType {
+    public func height() -> CGFloat {
+        return 60
     }
 }
