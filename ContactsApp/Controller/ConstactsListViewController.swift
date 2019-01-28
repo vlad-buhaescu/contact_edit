@@ -4,6 +4,7 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     
     init(viewModel: MainViewModelType) {
         self.viewModel = viewModel
+//        self.viewModel.delegate = self
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -23,14 +24,15 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
         navigationItem.title = viewModel.title
         tableView.register(ContactsCell.self, forCellReuseIdentifier: contactID)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addName))
+        navigationItem.backBarButtonItem = nil
     }
     
     @objc func addName() {
-        viewModel.rightButton?.onTapAction()
-//        let addContactViewController = AddContactViewController()
-//        addContactViewController.delegate = self
-//        let navigationController = UINavigationController(rootViewController: addContactViewController)
-//        present(navigationController, animated: true)
+        viewModel.rightButton?.onTapAction(nil)
+        //        let addContactViewController = AddContactViewController()
+        //        addContactViewController.delegate = self
+        //        let navigationController = UINavigationController(rootViewController: addContactViewController)
+        //        present(navigationController, animated: true)
     }
     
     func editContact(contact: Contact) {
@@ -50,20 +52,18 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        return viewModel.cellViewModels.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return viewModel.cellViewModels[indexPath.row].height()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let item = contacts[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: contactID, for: indexPath) as! ContactsCell
-        cell.selectionStyle = .none
-        cell.nameLabel.text = item.firstName + " " + item.lastName
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: contactID, for: indexPath) as? ContactsCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: viewModel.cellViewModels[indexPath.row])
         return cell
     }
     
@@ -75,10 +75,6 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let selectedRow = tableView.indexPathForSelectedRow {
-//            let addContactViewController = AddContactViewController(contactToEdit: contacts[selectedRow.row])
-//            addContactViewController.delegate = self
-//            navigationController?.pushViewController(addContactViewController, animated: true)
-        }
+        viewModel.didSelectIndex(indexPath.row)
     }
 }

@@ -47,10 +47,10 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func makeLeftButton() {
-        guard let leftButton = viewModel.rightButton else {
+        guard let leftButton = viewModel.leftButton else {
             return
         }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: leftButton.buttonStyle, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: leftButton.buttonStyle, target: self, action: #selector(cancel))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,12 +59,12 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func cancel() {
-        viewModel.leftButton?.onTapAction()
+        viewModel.leftButton?.onTapAction(nil)
     }
     
     @objc func save() {
         delegate?.addContact(text: contactToEdit ?? Contact())
-        viewModel.rightButton?.onTapAction()
+        viewModel.rightButton?.onTapAction(nil)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

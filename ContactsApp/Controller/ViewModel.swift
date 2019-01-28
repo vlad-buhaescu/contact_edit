@@ -3,15 +3,15 @@ import UIKit
 public protocol BarButtonType {
     var title: String? { get }
     var buttonStyle: UIBarButtonItem.SystemItem { get }
-    var onTapAction: () -> () { get }
+    var onTapAction: Action { get }
 }
 
 class BarButton: BarButtonType {
     var title: String?
     var buttonStyle: UIBarButtonItem.SystemItem
-    var onTapAction: () -> ()
+    var onTapAction: Action
 
-    public init(title: String? = nil, buttonStyle: UIBarButtonItem.SystemItem, onTapAction: @escaping () -> ()) {
+    public init(title: String? = nil, buttonStyle: UIBarButtonItem.SystemItem, onTapAction: @escaping Action) {
         self.title = title
         self.buttonStyle = buttonStyle
         self.onTapAction = onTapAction
@@ -25,22 +25,74 @@ public protocol NavigationBarType {
 }
 
 public protocol MainViewModelType: NavigationBarType {
+    var delegate: MainViewModelDelegate? { get }
+    var cellViewModels: [ContactsCellViewModelType] { get }
+    func didSelectIndex(_ index: Int)
+}
 
+public protocol MainViewModelDelegate {
+//    func reload()
+    func didSelectIndex(_ index: Int)
 }
 
 final public class MainViewModel: MainViewModelType {
-    public var title: String
+    
+    public var cellViewModels: [ContactsCellViewModelType] = [ContactsCellViewModel]()
+    public var leftButton: BarButtonType?
     public var rightButton: BarButtonType?
-    public var leftButton: BarButtonType? = nil
+    public var title: String
+    
+    public var delegate: MainViewModelDelegate?
 
-    public init(title: String, rightButton: BarButtonType?, leftButton: BarButtonType? = nil) {
-        self.title = title
-        self.rightButton = rightButton
-        self.leftButton = leftButton
+    public init() {
+        self.title = "Contact list"
+        self.rightButton = makeRightAction()
+        dataSource = [Contact(firstName: "asdasdas", lastName: "vlad")]
+        buildCellViewModels()
+    }
+    
+    public func didSelectIndex(_ index: Int) {
+        let action: Action = { [weak self] contact in
+            guard let self = self,
+                let contact = contact else { return }
+            Router.shared.dismiss()
+            self.combineContact(contact)
+        }
+        Router.shared.show(route: .editContact(contact: self.dataSource[index], leftAction: { _ in }, rightAction: action))
     }
     
     //MARK: - Private Properties
     
     private var dataSource = [Contact]()
     
+    //MARK: - Private Methods
+    
+    private func makeRightAction() -> BarButtonType {
+        let action: Action = { [weak self] contact in
+            guard let self = self,
+                let contact = contact else { return }
+            Router.shared.dismiss()
+            self.combineContact(contact)
+        }
+        return BarButton(buttonStyle: .add) { _ in
+            Router.shared.show(route: .newContact)
+//            Router.shared.show(route: .editContact(contact: nil, leftAction: { _ in}, rightAction: action))
+        }
+    }
+
+    private func combineContact(_ contact: Contact) {
+        // not sure if works
+        guard let index = dataSource.lastIndex(of: contact) else {
+            dataSource.append(contact)
+            return
+        }
+        dataSource[index] = contact
+    }
+    
+    private func buildCellViewModels() {
+        cellViewModels = dataSource.map({ (contact) -> ContactsCellViewModelType in
+            return ContactsCellViewModel(name: contact.firstName + " " + contact.lastName, labelName: "Contact Name")
+        })
+        
+    }
 }

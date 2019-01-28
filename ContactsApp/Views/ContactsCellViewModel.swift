@@ -1,17 +1,23 @@
-import Foundation
+import UIKit
 
-protocol ContactsCellViewModelType {
+public protocol ContactsCellViewModelType: CellViewModelType {
     var labelName: String { get }
     var name: String { get }
 }
 
-class ContactsCellViewModel: ContactsCellViewModelType {
-    var name: String
-    var labelName: String
-
+public class ContactsCellViewModel: ContactsCellViewModelType {
+    
+    public var name: String
+    public var labelName: String
+    
     public init(name: String, labelName: String) {
         self.name = name
         self.labelName = labelName
     }
 }
 
+extension ContactsCellViewModel: CellViewModelType {
+    public func height() -> CGFloat {
+        return 60
+    }
+}
