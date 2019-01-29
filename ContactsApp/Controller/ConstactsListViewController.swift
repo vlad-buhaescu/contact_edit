@@ -1,6 +1,6 @@
 import UIKit
 
-class ConstactsListViewController: UITableViewController, AddContactControllerBDelegate, UITextFieldDelegate {
+class ConstactsListViewController: UITableViewController, UITextFieldDelegate {
     
     init(viewModel: MainViewModelType) {
         self.viewModel = viewModel
@@ -24,7 +24,11 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
         navigationItem.title = viewModel.title
         tableView.register(ContactsCell.self, forCellReuseIdentifier: contactID)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addName))
-        navigationItem.backBarButtonItem = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.setHidesBackButton(true, animated: true)
     }
     
     @objc func addName() {

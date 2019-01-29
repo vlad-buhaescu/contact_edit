@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = SplashViewController()
         let mainNav = UINavigationController(rootViewController: vc)
+        mainNav.navigationItem.hidesBackButton = true
         Router.shared.setupNav(mainNav)
         self.window?.rootViewController = mainNav
         self.window?.makeKeyAndVisible()

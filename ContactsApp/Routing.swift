@@ -35,6 +35,7 @@ class Router {
         Router.shared.topController = a
         switch route {
         case .contactsList:
+//            Router.shared.navigation.navigationItem.setHidesBackButton(true, animated: true)
             Router.shared.navigation.pushViewController(a, animated: false)
         case .editContact(_,_):
             Router.shared.navigation.pushViewController(a, animated: true)

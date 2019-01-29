@@ -47,7 +47,7 @@ final public class MainViewModel: MainViewModelType {
     public init() {
         self.title = "Contact list"
         self.rightButton = makeRightAction()
-        dataSource = [Contact(firstName: "asdasdas", lastName: "vlad")]
+        dataSource = [Contact(firstName: "Jim", lastName: "Rohn")]
         buildCellViewModels()
     }
     
@@ -56,8 +56,6 @@ final public class MainViewModel: MainViewModelType {
         let action: Action = { [weak self] contact in
             guard let self = self,
                 let contact = contact else { return }
-            Router.shared.dismiss()
-//            self.combineContact(contact)
             selectedContact = contact
             self.buildCellViewModels()
             self.delegate?.reload()

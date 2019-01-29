@@ -3,6 +3,7 @@ import Foundation
 protocol CollectionType {
     var cellViewModels: [CellViewModelType] { get }
     var delegate: MainViewModelDelegate? { get set }
+    func saveAction()
 }
 
 protocol EditContactViewModelType: NavigationBarType, CollectionType {
@@ -20,10 +21,23 @@ class EditContactViewModel: EditContactViewModelType {
     public init(rightAction: @escaping Action, contactToEdit: Contact) {
         self.title = "Edit contact"
         self.contactToEdit = contactToEdit
+        self.rightAction = rightAction
         self.leftButton = makeLeftButton()
         self.rightButton = makeRightButton(rightAction)
         buildCellViewModels()
     }
+    
+    public func saveAction() {
+        rightAction(contactToEdit)
+    }
+    
+    public func cancelAction() {
+        Router.shared.dismiss()
+    }
+    
+    //MARK: - Private Properties
+    
+    private var rightAction: Action
     
     //MARK: - Private Methods
     

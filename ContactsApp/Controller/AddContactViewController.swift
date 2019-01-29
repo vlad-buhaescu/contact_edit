@@ -1,10 +1,5 @@
 import UIKit
 
-protocol AddContactControllerBDelegate: class {
-    func editContact(text: Contact)
-    func editContact(contact: Contact)
-}
-
 class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
     init(viewModel: NavigationBarType & CollectionType) {
@@ -17,24 +12,24 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    weak var delegate: AddContactControllerBDelegate?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TextCell.self, forCellReuseIdentifier: cellID)
-
         title = viewModel.title
-        
-        if contactToEdit == nil {
-            contactToEdit = Contact()
+    
+        if viewModel is NewContactViewModelType {
+            makeLeftButton()
             makeRightButton()
         }
-        if navigationController == nil {
-            makeLeftButton()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if viewModel is EditContactViewModelType {
+            viewModel.saveAction()
         }
-        makeViewModels(contact: contactToEdit)
     }
     
     private func makeRightButton() {
@@ -51,21 +46,16 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: leftButton.buttonStyle, target: self, action: #selector(cancel))
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        delegate?.editContact(contact: contactToEdit ?? Contact())
-    }
-    
     @objc func cancel() {
         viewModel.leftButton?.onTapAction(nil)
     }
     
     @objc func save() {
-        viewModel.rightButton?.onTapAction(contactToEdit)
+        viewModel.saveAction()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModels.count
+        return viewModel.cellViewModels.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,25 +70,10 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     //MARK: - Private Properties
     
     private let cellID = "cellID"
-    private var contactToEdit: Contact?
+//    private var contactToEdit: Contact?
     private var viewModels = [TextCellViewModel]()
     
     private var viewModel: NavigationBarType & CollectionType
-    
-    //MARK: - Private Methods
-    
-    private func makeViewModels(contact: Contact?) {
-        let firstNameViewModel = TextCellViewModel(labelText: "First name",
-                                                   text: contact?.firstName ?? "") { (newText) in
-                                                    contact?.firstName = newText
-        }
-        let lastNameViewModel = TextCellViewModel(labelText: "Last name",
-                                                  text: contact?.lastName ?? "") { (newText) in
-                                                    contact?.lastName = newText
-        }
-        viewModels = [firstNameViewModel, lastNameViewModel]
-        tableView.reloadData()
-    }
 }
 
 extension AddContactViewController: MainViewModelDelegate {
