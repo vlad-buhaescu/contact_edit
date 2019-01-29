@@ -24,9 +24,9 @@ public protocol NavigationBarType {
     var rightButton: BarButtonType? { get }
 }
 
-public protocol MainViewModelType: NavigationBarType {
-    var delegate: MainViewModelDelegate? { get set }
-    var cellViewModels: [ContactsCellViewModelType] { get }
+
+
+public protocol MainViewModelType: NavigationBarType, CollectionType {
     func didSelectIndex(_ index: Int)
 }
 
@@ -36,8 +36,7 @@ public protocol MainViewModelDelegate {
 }
 
 final public class MainViewModel: MainViewModelType {
-    
-    public var cellViewModels: [ContactsCellViewModelType] = [ContactsCellViewModel]()
+    public var cellViewModels: [CellViewModelType] = [ContactsCellViewModel]()
     public var leftButton: BarButtonType?
     public var rightButton: BarButtonType?
     public var title: String

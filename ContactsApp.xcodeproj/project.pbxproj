@@ -19,6 +19,7 @@
 		A127115321FB222200970252 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127115221FB222200970252 /* TextCell.swift */; };
 		A127115521FB229700970252 /* TextCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127115421FB229700970252 /* TextCellViewModel.swift */; };
 		A15751AC220063B8000174F9 /* NewContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15751AB220063B8000174F9 /* NewContactViewModel.swift */; };
+		A15751AE2200D08C000174F9 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15751AD2200D08C000174F9 /* TableViewController.swift */; };
 		A1FC88DF21FB78E60088C71D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88DE21FB78E60088C71D /* ViewModel.swift */; };
 		A1FC88E121FB79D90088C71D /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E021FB79D90088C71D /* Routing.swift */; };
 		A1FC88E321FF4D750088C71D /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */; };
@@ -62,6 +63,7 @@
 		A127115221FB222200970252 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		A127115421FB229700970252 /* TextCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCellViewModel.swift; sourceTree = "<group>"; };
 		A15751AB220063B8000174F9 /* NewContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContactViewModel.swift; sourceTree = "<group>"; };
+		A15751AD2200D08C000174F9 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		A1FC88DE21FB78E60088C71D /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		A1FC88E021FB79D90088C71D /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModel.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		104A422E21F66EF000DAF21D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A15751AD2200D08C000174F9 /* TableViewController.swift */,
 				104A41F321F63C8000DAF21D /* ConstactsListViewController.swift */,
 				A1FC88DE21FB78E60088C71D /* ViewModel.swift */,
 				104A422621F6624100DAF21D /* AddContactViewController.swift */,
@@ -310,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				104A422321F63DE800DAF21D /* Contact.swift in Sources */,
+				A15751AE2200D08C000174F9 /* TableViewController.swift in Sources */,
 				A1FC88E721FF5FC70088C71D /* ContactsCellViewModel.swift in Sources */,
 				104A422521F63EC700DAF21D /* ContactsCell.swift in Sources */,
 				104A422721F6624100DAF21D /* AddContactViewController.swift in Sources */,

@@ -1,8 +1,8 @@
 import UIKit
 
-class ConstactsListViewController: UITableViewController {
+class TableViewController: UITableViewController {
     
-    init(viewModel: MainViewModelType) {
+    init(viewModel: CollectionType & NavigationBarType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.delegate = self
@@ -12,7 +12,7 @@ class ConstactsListViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var viewModel: MainViewModelType
+    private var viewModel: CollectionType & NavigationBarType
     
     var contacts = [Contact]()
     var contactID = "contactID"
@@ -22,7 +22,10 @@ class ConstactsListViewController: UITableViewController {
         tableView.dataSource = self
         tableView.delegate = self
         navigationItem.title = viewModel.title
-        tableView.register(ContactsCell.self, forCellReuseIdentifier: contactID)
+        tableView.register(ContactsCell.self, forCellReuseIdentifier: ContactsCellViewModel.identifier)
+        tableView.register(TextCell.self, forCellReuseIdentifier: TextCellViewModel.identifier)
+//        tableView.register(ContactsCell.self, forCellReuseIdentifier: ContactsCellViewModel.identifier)
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addName))
     }
     
@@ -60,11 +63,23 @@ class ConstactsListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: contactID, for: indexPath) as? ContactsCell else {
-            return UITableViewCell()
+        
+        if let vm = viewModel.cellViewModels[indexPath.row] as? ContactsCellViewModelType {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactsCellViewModel.identifier, for: indexPath) as? ContactsCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: vm)
+            return cell
         }
-//        cell.configure(with: viewModel.cellViewModels[indexPath.row])
-        return cell
+        
+        if let vm = viewModel.cellViewModels[indexPath.row] as? TextCellViewModelType {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: TextCellViewModel.identifier, for: indexPath) as? TextCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: vm)
+            return cell
+        }
+        return UITableViewCell()
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -75,11 +90,13 @@ class ConstactsListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectIndex(indexPath.row)
+        if let vm = viewModel as? MainViewModelType {
+            vm.didSelectIndex(indexPath.row)
+        }
     }
 }
 
-extension ConstactsListViewController: MainViewModelDelegate {
+extension TableViewController: MainViewModelDelegate {
     
     func reload() {
         tableView.reloadData()

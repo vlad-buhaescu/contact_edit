@@ -1,7 +1,14 @@
 import UIKit
 
 public protocol CellViewModelType {
+    static var identifier: String { get }
     func height() -> CGFloat
+}
+
+extension CellViewModelType {
+    public static var identifier: String {
+        return String(describing: self)
+    }
 }
 
 public protocol TextCellViewModelType: CellViewModelType {

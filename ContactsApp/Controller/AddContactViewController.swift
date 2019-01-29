@@ -70,9 +70,6 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     //MARK: - Private Properties
     
     private let cellID = "cellID"
-//    private var contactToEdit: Contact?
-    private var viewModels = [TextCellViewModel]()
-    
     private var viewModel: NavigationBarType & CollectionType
 }
 

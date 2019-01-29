@@ -11,12 +11,12 @@ enum Routing {
         switch self {
         case .editContact(let contact, let rightAction):
             let vm = EditContactViewModel(rightAction: rightAction, contactToEdit: contact)
-            return AddContactViewController(viewModel: vm)
+            return TableViewController(viewModel: vm)
         case .contactsList:
-            return ConstactsListViewController(viewModel: MainViewModel())
+            return TableViewController(viewModel: MainViewModel())
         case .newContact(let editContact):
             let vm = NewContactViewModel(rightAction: editContact)
-            return AddContactViewController(viewModel: vm)
+            return TableViewController(viewModel: vm)
         }
     }
 }

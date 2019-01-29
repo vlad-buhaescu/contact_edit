@@ -1,5 +1,7 @@
 import UIKit
 
+//CellViewModelType
+
 public protocol ContactsCellViewModelType: CellViewModelType {
     var labelName: String { get }
     var name: String { get }

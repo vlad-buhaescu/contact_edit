@@ -1,12 +1,16 @@
 import Foundation
 
-protocol CollectionType {
+public protocol CollectionType {
     var cellViewModels: [CellViewModelType] { get }
     var delegate: MainViewModelDelegate? { get set }
     func saveAction()
 }
 
-protocol EditContactViewModelType: NavigationBarType, CollectionType {
+extension CollectionType {
+    public func saveAction() {}
+}
+
+public protocol EditContactViewModelType: NavigationBarType, CollectionType {
     var contactToEdit: Contact { get }
 }
 
