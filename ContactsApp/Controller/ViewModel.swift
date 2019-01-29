@@ -25,13 +25,13 @@ public protocol NavigationBarType {
 }
 
 public protocol MainViewModelType: NavigationBarType {
-    var delegate: MainViewModelDelegate? { get }
+    var delegate: MainViewModelDelegate? { get set }
     var cellViewModels: [ContactsCellViewModelType] { get }
     func didSelectIndex(_ index: Int)
 }
 
 public protocol MainViewModelDelegate {
-//    func reload()
+    func reload()
     func didSelectIndex(_ index: Int)
 }
 
@@ -52,18 +52,27 @@ final public class MainViewModel: MainViewModelType {
     }
     
     public func didSelectIndex(_ index: Int) {
+        var selectedContact = dataSource[index]
         let action: Action = { [weak self] contact in
             guard let self = self,
                 let contact = contact else { return }
             Router.shared.dismiss()
-            self.combineContact(contact)
+//            self.combineContact(contact)
+            selectedContact = contact
+            self.buildCellViewModels()
+            self.delegate?.reload()
         }
-        Router.shared.show(route: .editContact(contact: self.dataSource[index], leftAction: { _ in }, rightAction: action))
+        Router.shared.show(route: .editContact(contact: selectedContact, rightAction: action))
     }
     
     //MARK: - Private Properties
     
-    private var dataSource = [Contact]()
+    private var dataSource = [Contact]() {
+        didSet {
+            buildCellViewModels()
+            delegate?.reload()
+        }
+    }
     
     //MARK: - Private Methods
     
@@ -75,8 +84,7 @@ final public class MainViewModel: MainViewModelType {
             self.combineContact(contact)
         }
         return BarButton(buttonStyle: .add) { _ in
-            Router.shared.show(route: .newContact)
-//            Router.shared.show(route: .editContact(contact: nil, leftAction: { _ in}, rightAction: action))
+            Router.shared.show(route: .newContact(editContact: action))
         }
     }
 

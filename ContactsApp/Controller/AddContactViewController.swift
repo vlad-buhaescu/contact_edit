@@ -1,19 +1,16 @@
 import UIKit
 
 protocol AddContactControllerBDelegate: class {
-    func addContact(text: Contact)
+    func editContact(text: Contact)
     func editContact(contact: Contact)
 }
 
 class AddContactViewController: UITableViewController, UITextFieldDelegate {
     
-//    convenience init(contactToEdit: Contact?) {
-//        self.init(nibName: nil, bundle: nil)
-//        self.contactToEdit = contactToEdit
-//    }
-    init(viewModel: AddContactViewModelType) {
+    init(viewModel: NavigationBarType & CollectionType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,8 +29,9 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
         
         if contactToEdit == nil {
             contactToEdit = Contact()
-            title = "New Employee"
             makeRightButton()
+        }
+        if navigationController == nil {
             makeLeftButton()
         }
         makeViewModels(contact: contactToEdit)
@@ -63,8 +61,7 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func save() {
-        delegate?.addContact(text: contactToEdit ?? Contact())
-        viewModel.rightButton?.onTapAction(nil)
+        viewModel.rightButton?.onTapAction(contactToEdit)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,10 +69,11 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? TextCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? TextCell,
+        let vm = viewModel.cellViewModels[indexPath.row] as? TextCellViewModelType else {
             return UITableViewCell()
         }
-        cell.configure(with: viewModels[indexPath.row])
+        cell.configure(with: vm)
         return cell
     }
     
@@ -85,7 +83,7 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     private var contactToEdit: Contact?
     private var viewModels = [TextCellViewModel]()
     
-    private var viewModel: AddContactViewModelType
+    private var viewModel: NavigationBarType & CollectionType
     
     //MARK: - Private Methods
     
@@ -103,4 +101,13 @@ class AddContactViewController: UITableViewController, UITextFieldDelegate {
     }
 }
 
+extension AddContactViewController: MainViewModelDelegate {
+    func reload() {
+        tableView.reloadData()
+    }
+    
+    func didSelectIndex(_ index: Int) {
+        
+    }
+}
 

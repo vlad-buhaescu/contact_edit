@@ -4,15 +4,15 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     
     init(viewModel: MainViewModelType) {
         self.viewModel = viewModel
-//        self.viewModel.delegate = self
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let viewModel: MainViewModelType
+    private var viewModel: MainViewModelType
     
     var contacts = [Contact]()
     var contactID = "contactID"
@@ -29,10 +29,6 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     
     @objc func addName() {
         viewModel.rightButton?.onTapAction(nil)
-        //        let addContactViewController = AddContactViewController()
-        //        addContactViewController.delegate = self
-        //        let navigationController = UINavigationController(rootViewController: addContactViewController)
-        //        present(navigationController, animated: true)
     }
     
     func editContact(contact: Contact) {
@@ -42,7 +38,7 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
         }
     }
     
-    func addContact(text: Contact) {
+    func editContact(text: Contact) {
         let newRowIndex = contacts.count
         contacts.append(text)
         let indexPath = IndexPath(row: newRowIndex, section: 0)
@@ -76,5 +72,16 @@ class ConstactsListViewController: UITableViewController, AddContactControllerBD
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectIndex(indexPath.row)
+    }
+}
+
+extension ConstactsListViewController: MainViewModelDelegate {
+    
+    func reload() {
+        tableView.reloadData()
+    }
+    
+    func didSelectIndex(_ index: Int) {
+        
     }
 }

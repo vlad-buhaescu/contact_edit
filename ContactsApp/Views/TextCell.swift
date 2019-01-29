@@ -17,6 +17,7 @@ public final class TextCell: UITableViewCell {
     //MARK: - Public Methods
     
     public func configure(with viewModel: TextCellViewModelType) {
+        print("= viewModel.text \(viewModel.text)")
         nameTextLabel.text = viewModel.labelText
         nameTextField.text = viewModel.text
         onTextUpdate = viewModel.onTextUpdate
