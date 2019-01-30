@@ -1,6 +1,8 @@
 import UIKit
 
-//CellViewModelType
+//protocol Configurable {
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+//}
 
 public protocol ContactsCellViewModelType: CellViewModelType {
     var labelName: String { get }

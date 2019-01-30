@@ -3,6 +3,21 @@ import UIKit
 public protocol CellViewModelType {
     static var identifier: String { get }
     func height() -> CGFloat
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+}
+
+protocol Configurable {
+    func configure(with viewModel: CellViewModelType)
+}
+
+extension CellViewModelType {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: type(of: self).identifier, for: indexPath)
+        if let c = cell as? Configurable {
+            c.configure(with: self)
+        }
+        return cell
+    }
 }
 
 extension CellViewModelType {

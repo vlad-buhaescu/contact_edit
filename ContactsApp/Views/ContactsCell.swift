@@ -14,11 +14,6 @@ class ContactsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(with viewModel: ContactsCellViewModelType) {
-        nameLabel.text = viewModel.labelName
-        name.text = viewModel.name
-    }
-    
     //MARK: - Private Properties
     
     let nameLabel: UILabel = {
@@ -38,6 +33,7 @@ class ContactsCell: UITableViewCell {
     //MARK: - Private Methods
     
     func setupViews() {
+        selectionStyle = .none
         addSubview(nameLabel)
         addSubview(name)
         nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15).isActive = true
@@ -51,3 +47,12 @@ class ContactsCell: UITableViewCell {
     }
 }
 
+extension ContactsCell: Configurable {
+    func configure(with viewModel: CellViewModelType) {
+        guard let viewModel = viewModel as? ContactsCellViewModelType else {
+            return
+        }
+        nameLabel.text = viewModel.labelName
+        name.text = viewModel.name
+    }
+}

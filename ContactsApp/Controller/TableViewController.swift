@@ -12,48 +12,78 @@ class TableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var viewModel: CollectionType & NavigationBarType
-    
-    var contacts = [Contact]()
-    var contactID = "contactID"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        
         navigationItem.title = viewModel.title
         tableView.register(ContactsCell.self, forCellReuseIdentifier: ContactsCellViewModel.identifier)
         tableView.register(TextCell.self, forCellReuseIdentifier: TextCellViewModel.identifier)
-//        tableView.register(ContactsCell.self, forCellReuseIdentifier: ContactsCellViewModel.identifier)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addName))
+        setupView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if viewModel is EditContactViewModelType {
+            viewModel.saveAction()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard viewModel is MainViewModelType else {
+            return
+        }
         navigationItem.setHidesBackButton(true, animated: true)
+    }
+    
+    //MARK: - Private Properties
+    
+    private var viewModel: CollectionType & NavigationBarType
+    
+    //MARK: - Private Methods
+    
+    private func setupView() {
+        if viewModel is NewContactViewModelType {
+            makeLeftButton()
+            makeRightButton()
+            tableView.allowsSelection = false
+        }
+        
+        if let vm = viewModel as? MainViewModelType,
+            let button = vm.rightButton {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: button.buttonStyle, target: self, action: #selector(addName))
+        }
+    }
+    
+    private func makeRightButton() {
+        guard let rightButton = viewModel.rightButton else {
+            return
+        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: rightButton.buttonStyle, target: self, action: #selector(save))
+    }
+    
+    private func makeLeftButton() {
+        guard let leftButton = viewModel.leftButton else {
+            return
+        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: leftButton.buttonStyle, target: self, action: #selector(cancel))
+    }
+    
+    @objc func cancel() {
+        viewModel.leftButton?.onTapAction(nil)
+    }
+    
+    @objc func save() {
+        viewModel.saveAction()
     }
     
     @objc func addName() {
         viewModel.rightButton?.onTapAction(nil)
     }
-    
-    func editContact(contact: Contact) {
-        if let index = contacts.index(of: contact) {
-            contacts[index] = contact
-            tableView.reloadData()
-        }
-    }
-    
-    func editContact(text: Contact) {
-        let newRowIndex = contacts.count
-        contacts.append(text)
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        tableView.reloadData()
-    }
-    
+ 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.cellViewModels.count
     }
@@ -63,29 +93,14 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if let vm = viewModel.cellViewModels[indexPath.row] as? ContactsCellViewModelType {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactsCellViewModel.identifier, for: indexPath) as? ContactsCell else {
-                return UITableViewCell()
-            }
-            cell.configure(with: vm)
-            return cell
-        }
-        
-        if let vm = viewModel.cellViewModels[indexPath.row] as? TextCellViewModelType {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: TextCellViewModel.identifier, for: indexPath) as? TextCell else {
-                return UITableViewCell()
-            }
-            cell.configure(with: vm)
-            return cell
-        }
-        return UITableViewCell()
+        let vm = viewModel.cellViewModels[indexPath.row]
+        return vm.tableView(tableView, cellForRowAt: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            contacts.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+        if editingStyle == .delete,
+            let vm = viewModel as? MainViewModelType {
+            vm.deleteAtIndex(indexPath.row)
         }
     }
     
@@ -97,12 +112,7 @@ class TableViewController: UITableViewController {
 }
 
 extension TableViewController: MainViewModelDelegate {
-    
     func reload() {
         tableView.reloadData()
-    }
-    
-    func didSelectIndex(_ index: Int) {
-        
     }
 }

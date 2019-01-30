@@ -14,15 +14,6 @@ public final class TextCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Public Methods
-    
-    public func configure(with viewModel: TextCellViewModelType) {
-        print("= viewModel.text \(viewModel.text)")
-        nameTextLabel.text = viewModel.labelText
-        nameTextField.text = viewModel.text
-        onTextUpdate = viewModel.onTextUpdate
-    }
-    
     //MARK: - Private Properties
     
     private var onTextUpdate: ((String) -> ())?
@@ -46,6 +37,7 @@ public final class TextCell: UITableViewCell {
     //MARK: - Private Methods
     
     private func setupViews() {
+        selectionStyle = .none
         nameTextField.delegate = self
         addSubview(nameTextLabel)
         addSubview(nameTextField)
@@ -77,4 +69,15 @@ extension TextCell: UITextFieldDelegate {
         return true
     }
     
+}
+
+extension TextCell: Configurable {
+    func configure(with viewModel: CellViewModelType) {
+        guard let viewModel = viewModel as? TextCellViewModelType else {
+            return
+        }
+        nameTextLabel.text = viewModel.labelText
+        nameTextField.text = viewModel.text
+        onTextUpdate = viewModel.onTextUpdate
+    }
 }

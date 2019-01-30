@@ -28,11 +28,15 @@ public protocol NavigationBarType {
 
 public protocol MainViewModelType: NavigationBarType, CollectionType {
     func didSelectIndex(_ index: Int)
+    func deleteAtIndex(_ index: Int)
 }
 
 public protocol MainViewModelDelegate {
     func reload()
-    func didSelectIndex(_ index: Int)
+}
+
+extension MainViewModelDelegate {
+    func didSelectIndex(_ index: Int) {}
 }
 
 final public class MainViewModel: MainViewModelType {
@@ -60,6 +64,11 @@ final public class MainViewModel: MainViewModelType {
             self.delegate?.reload()
         }
         Router.shared.show(route: .editContact(contact: selectedContact, rightAction: action))
+    }
+    
+    public func deleteAtIndex(_ index: Int) {
+        dataSource.remove(at: index)
+        buildCellViewModels()
     }
     
     //MARK: - Private Properties
