@@ -5,12 +5,11 @@ protocol NewContactViewModelType: NavigationBarType, CollectionType {
 
 final class NewContactViewModel: NewContactViewModelType {
     
-    var cellViewModels: [CellViewModelType] = [TextCellViewModel]()
-    var delegate: MainViewModelDelegate?
-    
     var title: String
     var leftButton: BarButtonType?
     var rightButton: BarButtonType?
+    var cellViewModels: [CellViewModelType] = [TextCellViewModel]()
+    var delegate: MainViewModelDelegate?
     
     public init(rightAction: @escaping Action) {
         self.title = "New contact"
@@ -21,13 +20,13 @@ final class NewContactViewModel: NewContactViewModelType {
     }
     
     func onTapSaveAction() {
-        rightAction(contactToEdit)
+        rightAction(newContact)
     }
     
     //MARK: - Private Properties
     
     private var rightAction: Action
-    private var contactToEdit = Contact()
+    private var newContact = Contact()
     
     //MARK: - Public Methods
     
@@ -45,12 +44,12 @@ final class NewContactViewModel: NewContactViewModelType {
         let firstNameViewModel = TextCellViewModel(labelText: "First name",
                                                    text: "") { [weak self] (newText) in
                                                     guard let self = self else { return }
-                                                    self.contactToEdit.firstName = newText
+                                                    self.newContact.firstName = newText
         }
         let lastNameViewModel = TextCellViewModel(labelText: "Last name",
                                                   text: "") { [weak self] (newText) in
                                                     guard let self = self else { return }
-                                                    self.contactToEdit.lastName = newText
+                                                    self.newContact.lastName = newText
         }
         cellViewModels = [firstNameViewModel, lastNameViewModel]
         delegate?.reload()

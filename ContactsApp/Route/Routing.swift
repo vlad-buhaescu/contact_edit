@@ -53,13 +53,15 @@ class Router {
     }
     
     func dismiss() {
-        Router.shared.topController.dismiss(animated: true, completion: nil)
-        if stack.count > 0 { stack.removeLast() }
+        if stack.count > 0 {
+            stack.removeLast()
+            Router.shared.topController.dismiss(animated: true, completion: nil)
+        }
     }
     
     func pop() {
-        Router.shared.navigation.popViewController(animated: true)
         if stack.count > 0 { stack.removeLast() }
+        Router.shared.navigation.popViewController(animated: true)
     }
 }
 

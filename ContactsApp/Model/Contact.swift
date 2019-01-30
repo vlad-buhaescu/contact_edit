@@ -13,4 +13,8 @@ public class Contact: NSObject {
         self.firstName = firstName
         self.lastName = lastName
     }
+    
+    public override var description: String {
+        return firstName + " " + lastName
+    }
 }

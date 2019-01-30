@@ -7,6 +7,8 @@ final class MainViewModelTests: XCTestCase {
     
     override func setUp() {
         sut = MainViewModel()
+        Router.shared.setupNav(UINavigationController())
+        Router.shared.show(route: .contactsList)
     }
 
     override func tearDown() {

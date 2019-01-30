@@ -10,6 +10,10 @@ final class EditContactViewModelTests: XCTestCase {
     }
     
     override func tearDown() {
+        sut = nil
+        Router.shared.stack = []
+        Router.shared.topController = nil
+        Router.shared.navigation = nil
         super.tearDown()
     }
     
