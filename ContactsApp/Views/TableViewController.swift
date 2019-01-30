@@ -26,7 +26,7 @@ class TableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if viewModel is EditContactViewModelType {
-            viewModel.saveAction()
+            viewModel.onTapSaveAction()
         }
     }
     
@@ -76,7 +76,7 @@ class TableViewController: UITableViewController {
     }
     
     @objc func save() {
-        viewModel.saveAction()
+        viewModel.onTapSaveAction()
     }
     
     @objc func addName() {

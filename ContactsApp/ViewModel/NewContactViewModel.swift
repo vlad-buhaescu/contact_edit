@@ -3,7 +3,8 @@ import Foundation
 protocol NewContactViewModelType: NavigationBarType, CollectionType {
 }
 
-class NewContactViewModel: NewContactViewModelType {
+final class NewContactViewModel: NewContactViewModelType {
+    
     var cellViewModels: [CellViewModelType] = [TextCellViewModel]()
     var delegate: MainViewModelDelegate?
     
@@ -19,7 +20,7 @@ class NewContactViewModel: NewContactViewModelType {
         buildCellViewModels()
     }
     
-    func saveAction() {
+    func onTapSaveAction() {
         rightAction(contactToEdit)
     }
     

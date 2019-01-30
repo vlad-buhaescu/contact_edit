@@ -14,16 +14,20 @@ extension MainViewModelDelegate {
 }
 
 final public class MainViewModel: MainViewModelType {
+    
+    
     public var cellViewModels: [CellViewModelType] = [ContactsCellViewModel]()
     public var leftButton: BarButtonType?
     public var rightButton: BarButtonType?
     public var title: String
     
     public var delegate: MainViewModelDelegate?
-
-    public init() {
+    public func onTapSaveAction() {}
+    
+    public init(contacts: [Contact] = []) {
         self.title = "Contact list"
         self.rightButton = makeRightAction()
+        self.dataSource = contacts
         buildCellViewModels()
     }
     
@@ -41,7 +45,6 @@ final public class MainViewModel: MainViewModelType {
     
     public func deleteAtIndex(_ index: Int) {
         dataSource.remove(at: index)
-        buildCellViewModels()
     }
     
     //MARK: - Private Properties
@@ -63,7 +66,7 @@ final public class MainViewModel: MainViewModelType {
             self.combineContact(contact)
         }
         return BarButton(buttonStyle: .add) { _ in
-            Router.shared.show(route: .newContact(editContact: action))
+            Router.shared.show(route: .newContact(saveAction: action))
         }
     }
 

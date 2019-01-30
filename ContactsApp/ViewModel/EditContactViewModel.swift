@@ -3,51 +3,40 @@ import Foundation
 public protocol CollectionType {
     var cellViewModels: [CellViewModelType] { get }
     var delegate: MainViewModelDelegate? { get set }
-    func saveAction()
-}
-
-extension CollectionType {
-    public func saveAction() {}
+    func onTapSaveAction()
 }
 
 public protocol EditContactViewModelType: NavigationBarType, CollectionType {
     var contactToEdit: Contact { get }
+    var saveAction: Action { get }
 }
 
-class EditContactViewModel: EditContactViewModelType {
+final class EditContactViewModel: EditContactViewModelType {
     var cellViewModels: [CellViewModelType] = [TextCellViewModel]()
     var title: String
     var leftButton: BarButtonType?
     var rightButton: BarButtonType?
     var contactToEdit: Contact
     var delegate: MainViewModelDelegate?
-
-    public init(rightAction: @escaping Action, contactToEdit: Contact) {
+    var saveAction: Action
+    
+    public init(saveAction: @escaping Action, contactToEdit: Contact) {
         self.title = "Edit contact"
         self.contactToEdit = contactToEdit
-        self.rightAction = rightAction
+        self.saveAction = saveAction
         self.leftButton = makeLeftButton()
-        self.rightButton = makeRightButton(rightAction)
         buildCellViewModels()
     }
     
-    public func saveAction() {
-        rightAction(contactToEdit)
+    public func onTapSaveAction() {
+        saveAction(contactToEdit)
     }
     
     public func cancelAction() {
         Router.shared.dismiss()
     }
-    
-    //MARK: - Private Properties
-    
-    private var rightAction: Action
-    
+  
     //MARK: - Private Methods
-    
-    private func makeRightButton(_ rightAction: @escaping Action) -> BarButtonType {
-        return BarButton(buttonStyle: .save, onTapAction: rightAction)
-    }
     
     private func makeLeftButton() -> BarButtonType {
         return BarButton(buttonStyle: .cancel, onTapAction: { (contact) in

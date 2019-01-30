@@ -2,15 +2,19 @@ import UIKit
 
 public typealias Action = (Contact?) -> ()
 
+func ==(lhs: Action, rhs: Action) -> Bool {
+    return lhs(nil) == rhs(nil)
+}
+
 enum Routing {
-    case newContact(editContact: Action)
+    case newContact(saveAction: Action)
     case editContact(contact: Contact, rightAction: Action)
     case contactsList
     
     func makeScreen() -> UIViewController {
         switch self {
-        case .editContact(let contact, let rightAction):
-            let vm = EditContactViewModel(rightAction: rightAction, contactToEdit: contact)
+        case .editContact(let contact, let saveAction):
+            let vm = EditContactViewModel(saveAction: saveAction, contactToEdit: contact)
             return TableViewController(viewModel: vm)
         case .contactsList:
             return TableViewController(viewModel: MainViewModel())
@@ -26,16 +30,19 @@ class Router {
     var topController: UIViewController!
     static let shared = Router()
     
+    var stack: [UIViewController] = []
+    
     func setupNav(_ navigationController: UINavigationController) {
         navigation = navigationController
     }
     
     func show(route: Routing) {
         let a = route.makeScreen()
+        stack.append(a)
+        topController = a
         Router.shared.topController = a
         switch route {
         case .contactsList:
-//            Router.shared.navigation.navigationItem.setHidesBackButton(true, animated: true)
             Router.shared.navigation.pushViewController(a, animated: false)
         case .editContact(_,_):
             Router.shared.navigation.pushViewController(a, animated: true)
@@ -47,9 +54,12 @@ class Router {
     
     func dismiss() {
         Router.shared.topController.dismiss(animated: true, completion: nil)
+        if stack.count > 0 { stack.removeLast() }
     }
     
     func pop() {
         Router.shared.navigation.popViewController(animated: true)
+        if stack.count > 0 { stack.removeLast() }
     }
 }
+

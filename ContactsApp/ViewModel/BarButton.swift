@@ -11,3 +11,11 @@ class BarButton: BarButtonType {
         self.onTapAction = onTapAction
     }
 }
+
+extension BarButton: Equatable {
+    static func == (lhs: BarButton, rhs: BarButton) -> Bool {
+        return lhs.buttonStyle == rhs.buttonStyle &&
+               lhs.title == rhs.title &&
+            lhs.onTapAction == rhs.onTapAction
+    }
+}
