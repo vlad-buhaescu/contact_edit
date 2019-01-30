@@ -25,7 +25,17 @@ enum Routing {
     }
 }
 
-class Router {
+protocol RouterType {
+    var navigation: UINavigationController! { get set }
+    var topController: UIViewController! { get set }
+    var stack: [UIViewController] { get }
+    func setupNav(_ navigationController: UINavigationController)
+    func show(route: Routing)
+    func dismiss()
+    func pop()
+}
+
+class Router: RouterType {
     var navigation: UINavigationController!
     var topController: UIViewController!
     static let shared = Router()

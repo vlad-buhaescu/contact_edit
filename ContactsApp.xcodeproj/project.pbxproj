@@ -22,6 +22,7 @@
 		A18FE6EB2201B50300FC7EDD /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18FE6EA2201B50300FC7EDD /* MainViewModelTests.swift */; };
 		A18FE6ED2201BD1800FC7EDD /* EditContactViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18FE6EC2201BD1800FC7EDD /* EditContactViewModelTests.swift */; };
 		A18FE6EF2201F13100FC7EDD /* NewContactViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18FE6EE2201F13100FC7EDD /* NewContactViewModelTests.swift */; };
+		A18FE6F12201FDEF00FC7EDD /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18FE6F02201FDEF00FC7EDD /* RouterTests.swift */; };
 		A1FC88DF21FB78E60088C71D /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88DE21FB78E60088C71D /* MainViewModel.swift */; };
 		A1FC88E121FB79D90088C71D /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E021FB79D90088C71D /* Routing.swift */; };
 		A1FC88E321FF4D750088C71D /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */; };
@@ -68,6 +69,7 @@
 		A18FE6EA2201B50300FC7EDD /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
 		A18FE6EC2201BD1800FC7EDD /* EditContactViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModelTests.swift; sourceTree = "<group>"; };
 		A18FE6EE2201F13100FC7EDD /* NewContactViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContactViewModelTests.swift; sourceTree = "<group>"; };
+		A18FE6F02201FDEF00FC7EDD /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		A1FC88DE21FB78E60088C71D /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		A1FC88E021FB79D90088C71D /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModel.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				A1FC88E021FB79D90088C71D /* Routing.swift */,
+				A18FE6F02201FDEF00FC7EDD /* RouterTests.swift */,
 			);
 			path = Route;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A18FE6F12201FDEF00FC7EDD /* RouterTests.swift in Sources */,
 				A18FE6ED2201BD1800FC7EDD /* EditContactViewModelTests.swift in Sources */,
 				A18FE6EB2201B50300FC7EDD /* MainViewModelTests.swift in Sources */,
 				A18FE6EF2201F13100FC7EDD /* NewContactViewModelTests.swift in Sources */,
