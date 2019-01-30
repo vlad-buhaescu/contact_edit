@@ -1,7 +1,6 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-    
     init(viewModel: CollectionType & NavigationBarType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

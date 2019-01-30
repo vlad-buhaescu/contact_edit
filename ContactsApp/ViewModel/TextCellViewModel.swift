@@ -11,6 +11,10 @@ protocol Configurable {
 }
 
 extension CellViewModelType {
+    public func height() -> CGFloat {
+        return 60
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: type(of: self).identifier, for: indexPath)
         if let c = cell as? Configurable {

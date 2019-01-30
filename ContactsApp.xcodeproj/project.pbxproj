@@ -18,6 +18,8 @@
 		A127115521FB229700970252 /* TextCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127115421FB229700970252 /* TextCellViewModel.swift */; };
 		A15751AC220063B8000174F9 /* NewContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15751AB220063B8000174F9 /* NewContactViewModel.swift */; };
 		A15751AE2200D08C000174F9 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15751AD2200D08C000174F9 /* TableViewController.swift */; };
+		A15751B32201B3FA000174F9 /* NavigationBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15751B22201B3FA000174F9 /* NavigationBarType.swift */; };
+		A18FE6E92201B46700FC7EDD /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18FE6E82201B46700FC7EDD /* BarButton.swift */; };
 		A1FC88DF21FB78E60088C71D /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88DE21FB78E60088C71D /* MainViewModel.swift */; };
 		A1FC88E121FB79D90088C71D /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E021FB79D90088C71D /* Routing.swift */; };
 		A1FC88E321FF4D750088C71D /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */; };
@@ -60,6 +62,8 @@
 		A127115421FB229700970252 /* TextCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCellViewModel.swift; sourceTree = "<group>"; };
 		A15751AB220063B8000174F9 /* NewContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContactViewModel.swift; sourceTree = "<group>"; };
 		A15751AD2200D08C000174F9 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		A15751B22201B3FA000174F9 /* NavigationBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarType.swift; sourceTree = "<group>"; };
+		A18FE6E82201B46700FC7EDD /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		A1FC88DE21FB78E60088C71D /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		A1FC88E021FB79D90088C71D /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModel.swift; sourceTree = "<group>"; };
@@ -119,11 +123,10 @@
 				104A41FB21F63C8500DAF21D /* Assets.xcassets */,
 				104A41FD21F63C8500DAF21D /* LaunchScreen.storyboard */,
 				104A420021F63C8500DAF21D /* Info.plist */,
-				A1FC88E021FB79D90088C71D /* Routing.swift */,
-				A1FC88E421FF5BA40088C71D /* SplashViewController.swift */,
+				A15751AF2201B148000174F9 /* Route */,
 				104A422C21F66DAA00DAF21D /* Model */,
-				104A422E21F66EF000DAF21D /* Controller */,
 				104A422D21F66ED600DAF21D /* Views */,
+				104A422E21F66EF000DAF21D /* ViewModel */,
 			);
 			path = ContactsApp;
 			sourceTree = "<group>";
@@ -157,23 +160,34 @@
 		104A422D21F66ED600DAF21D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A1FC88E421FF5BA40088C71D /* SplashViewController.swift */,
+				A15751AD2200D08C000174F9 /* TableViewController.swift */,
 				104A422421F63EC700DAF21D /* ContactsCell.swift */,
-				A1FC88E621FF5FC70088C71D /* ContactsCellViewModel.swift */,
 				A127115221FB222200970252 /* TextCell.swift */,
-				A127115421FB229700970252 /* TextCellViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		104A422E21F66EF000DAF21D /* Controller */ = {
+		104A422E21F66EF000DAF21D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				A15751AD2200D08C000174F9 /* TableViewController.swift */,
+				A18FE6E82201B46700FC7EDD /* BarButton.swift */,
 				A1FC88DE21FB78E60088C71D /* MainViewModel.swift */,
 				A1FC88E221FF4D750088C71D /* EditContactViewModel.swift */,
 				A15751AB220063B8000174F9 /* NewContactViewModel.swift */,
+				A1FC88E621FF5FC70088C71D /* ContactsCellViewModel.swift */,
+				A127115421FB229700970252 /* TextCellViewModel.swift */,
+				A15751B22201B3FA000174F9 /* NavigationBarType.swift */,
 			);
-			path = Controller;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A15751AF2201B148000174F9 /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				A1FC88E021FB79D90088C71D /* Routing.swift */,
+			);
+			path = Route;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				104A422321F63DE800DAF21D /* Contact.swift in Sources */,
+				A18FE6E92201B46700FC7EDD /* BarButton.swift in Sources */,
 				A15751AE2200D08C000174F9 /* TableViewController.swift in Sources */,
 				A1FC88E721FF5FC70088C71D /* ContactsCellViewModel.swift in Sources */,
 				104A422521F63EC700DAF21D /* ContactsCell.swift in Sources */,
@@ -315,6 +330,7 @@
 				A1FC88E121FB79D90088C71D /* Routing.swift in Sources */,
 				104A41F221F63C8000DAF21D /* AppDelegate.swift in Sources */,
 				A15751AC220063B8000174F9 /* NewContactViewModel.swift in Sources */,
+				A15751B32201B3FA000174F9 /* NavigationBarType.swift in Sources */,
 				A1FC88DF21FB78E60088C71D /* MainViewModel.swift in Sources */,
 				A127115321FB222200970252 /* TextCell.swift in Sources */,
 				A1FC88E521FF5BA40088C71D /* SplashViewController.swift in Sources */,

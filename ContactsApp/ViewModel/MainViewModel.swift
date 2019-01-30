@@ -1,31 +1,5 @@
 import UIKit
 
-public protocol BarButtonType {
-    var title: String? { get }
-    var buttonStyle: UIBarButtonItem.SystemItem { get }
-    var onTapAction: Action { get }
-}
-
-class BarButton: BarButtonType {
-    var title: String?
-    var buttonStyle: UIBarButtonItem.SystemItem
-    var onTapAction: Action
-
-    public init(title: String? = nil, buttonStyle: UIBarButtonItem.SystemItem, onTapAction: @escaping Action) {
-        self.title = title
-        self.buttonStyle = buttonStyle
-        self.onTapAction = onTapAction
-    }
-}
-
-public protocol NavigationBarType {
-    var title: String { get }
-    var leftButton: BarButtonType? { get }
-    var rightButton: BarButtonType? { get }
-}
-
-
-
 public protocol MainViewModelType: NavigationBarType, CollectionType {
     func didSelectIndex(_ index: Int)
     func deleteAtIndex(_ index: Int)
@@ -50,7 +24,6 @@ final public class MainViewModel: MainViewModelType {
     public init() {
         self.title = "Contact list"
         self.rightButton = makeRightAction()
-        dataSource = [Contact(firstName: "Jim", lastName: "Rohn")]
         buildCellViewModels()
     }
     

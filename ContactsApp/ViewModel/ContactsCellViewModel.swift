@@ -1,27 +1,16 @@
 import UIKit
 
-//protocol Configurable {
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-//}
-
 public protocol ContactsCellViewModelType: CellViewModelType {
     var labelName: String { get }
     var name: String { get }
 }
 
 public class ContactsCellViewModel: ContactsCellViewModelType {
-    
     public var name: String
     public var labelName: String
     
     public init(name: String, labelName: String) {
         self.name = name
         self.labelName = labelName
-    }
-}
-
-extension ContactsCellViewModel: CellViewModelType {
-    public func height() -> CGFloat {
-        return 60
     }
 }
