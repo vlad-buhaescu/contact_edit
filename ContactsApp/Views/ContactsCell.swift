@@ -1,22 +1,8 @@
-//
-//  ContactsCell.swift
-//  ContactsApp
-//
-//  Created by Dan  Tatar on 21/01/2019.
-//  Copyright © 2019 Dany. All rights reserved.
-//
-
 import UIKit
 
 class ContactsCell: UITableViewCell {
     
-    let nameLabel: UILabel = {
-        var nl = UILabel()
-        nl.font = UIFont.boldSystemFont(ofSize: 23)
-        nl.text = "First Name"
-        nl.translatesAutoresizingMaskIntoConstraints = false
-        return nl
-    }()
+    // MARK: - Life cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,15 +14,45 @@ class ContactsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Private Properties
+    
+    let nameLabel: UILabel = {
+        var label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 8)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let name: UILabel = {
+        var label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 23)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    //MARK: - Private Methods
+    
     func setupViews() {
-      
+        selectionStyle = .none
         addSubview(nameLabel)
-      
-        //constraints nameLabel
+        addSubview(name)
         nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15).isActive = true
         nameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
         nameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
-        nameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        
+        name.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
+        name.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+        name.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+        name.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
     }
 }
 
+extension ContactsCell: Configurable {
+    func configure(with viewModel: CellViewModelType) {
+        guard let viewModel = viewModel as? ContactsCellViewModelType else {
+            return
+        }
+        nameLabel.text = viewModel.labelName
+        name.text = viewModel.name
+    }
+}
